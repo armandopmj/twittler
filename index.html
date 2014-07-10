@@ -1,26 +1,103 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/data_generator.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/twittler.css" rel="stylesheet" />
   </head>
   <body>
+
+    <header class="navbar navbar-default nav_c">
+      <div class="container">
+      <nav role="navigation">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <img class="navbar-brand" src="img/birdt.png" alt="bird" style="padding: 5px">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter Handle to Begin!">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            
+ 
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">Link</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+      </div>
+    </header>
+
+    <div class="container">
+      <div id="tweet_holder">
+
+
+      </div>
+    </div>
+
     <script>
 
+      function decon_objs( s_i, l ){  
+        var timer = 1;
+        for( var i = l; i >= s_i; i-- ){
+          var tweet = streams.home[i];
+          var time = String(streams.home[i].created_at).split(" ")[4]
+          var $tweet = 
+            $("<div class='row'> <div class='col-sm-3'> </div> <div class='col-sm-6 label-info' id='tweet'>"+'@'+ tweet.user +': '+ tweet.message +" "+ time +"</div> </div>").hide().fadeIn(timer * 500);
+          $tweet.prependTo($('#tweet_holder'));
+          timer += 1;
+        }
+      }
+
+      var start_i = 0, end_i = streams.home.length - 1;
+
+      function calc_length() {
+        start_i = end_i
+        end_i = streams.home.length - 1;
+        decon_objs( start_i, end_i );
+      };
+
+      setInterval( calc_length, 2000 );
+
       $(document).ready(function(){
-        var $body = $('body');
+        var $body = $('#tweet_holder');
         $body.html('');
 
-        var index = streams.home.length - 1;
+        var index = end_i;
         while(index >= 0){
           var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          var time = String(streams.home[i].created_at).split(" ")[4]
+          var $tweet = $("<div class='row'> <div class='col-sm-3'> </div> <div class='col-sm-6 label-info' id='tweet'>"+'@'+ tweet.user +': '+ tweet.message +" "+ time +"</div> </div>");
           $tweet.appendTo($body);
           index -= 1;
         }
-
       });
+
+
 
     </script>
   </body>

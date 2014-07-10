@@ -1,0 +1,25 @@
+body {
+	background-color: #edfffb;
+}
+.nav_c{
+	background-color: #e4e7e8;
+}
+
+#tweet_holder {
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+#tweet {
+	color: #737373;
+	box-shadow: 3px 5px 6px #ababab;
+	background-color: #e0e0e0 ;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size:120%
+    -moz-border-radius: 5px;
+	border-radius: 5px;
+	letter-spacing:1px
+}
