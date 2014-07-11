@@ -3,6 +3,7 @@
   <head>
     <script src="js/jquery.js"></script>
     <script src="js/data_generator.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/twittler.css" rel="stylesheet" />
   </head>
@@ -34,15 +35,16 @@
             
  
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#">Link</a></li>
+              <li><a class="change" href="#"></a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Friends Feeds <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
+                  <li><a href="#" class="friend" data-user="shawndrost">@shawndrost</a></li>
+                  <li><a href="#" class="friend" data-user="sharksforcheap">@sharksforcheap</a></li>
+                  <li><a href="#" class="friend" data-user="mracus">@mracus</a></li>
+                  <li><a href="#" class="friend" data-user="douglascalhoun">@douglascalhoun</a></li>
                   <li class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#" class="friend" data-user="AllFriends">@AllFriends</a></li>
                 </ul>
               </li>
             </ul>
@@ -61,23 +63,21 @@
 
     <script>
 
+      var stream = streams.home, end_i = stream.length - 1;
+
       function decon_objs( s_i, l ){  
-        var timer = 1;
         for( var i = l; i >= s_i; i-- ){
-          var tweet = streams.home[i];
-          var time = String(streams.home[i].created_at).split(" ")[4]
+          var tweet = stream[i];
+          var time = String(stream[i].created_at).split(" ")[4]
           var $tweet = 
-            $("<div class='row'> <div class='col-sm-3'> </div> <div class='col-sm-6 label-info' id='tweet'>"+'@'+ tweet.user +': '+ tweet.message +" "+ time +"</div> </div>").hide().fadeIn(timer * 500);
+            $("<div class='row "+ tweet.user +"'> <div class='col-sm-3'> </div> <div class='col-sm-6 label-info' id='tweet'>"+'@'+ tweet.user +': '+ tweet.message +" "+ time +"</div> </div>").hide().fadeIn(800);
           $tweet.prependTo($('#tweet_holder'));
-          timer += 1;
         }
       }
 
-      var start_i = 0, end_i = streams.home.length - 1;
-
       function calc_length() {
-        start_i = end_i
-        end_i = streams.home.length - 1;
+        var start_i = end_i
+        end_i = stream.length - 1;
         decon_objs( start_i, end_i );
       };
 
@@ -86,15 +86,33 @@
       $(document).ready(function(){
         var $body = $('#tweet_holder');
         $body.html('');
-
         var index = end_i;
         while(index >= 0){
-          var tweet = streams.home[index];
-          var time = String(streams.home[i].created_at).split(" ")[4]
-          var $tweet = $("<div class='row'> <div class='col-sm-3'> </div> <div class='col-sm-6 label-info' id='tweet'>"+'@'+ tweet.user +': '+ tweet.message +" "+ time +"</div> </div>");
+          var tweet = stream[index];
+          var time = String(stream[index].created_at).split(" ")[4]
+          var $tweet = $("<div class='row "+ tweet.user +"'> <div class='col-sm-3'> </div> <div class='col-sm-6 label-info' id='tweet'>"+'@'+ tweet.user +': '+ tweet.message +" "+ time +"</div> </div>");
           $tweet.appendTo($body);
           index -= 1;
         }
+      	
+        $(".friend").on("click", function() {
+       	  var clicked_friend = $( this ).data( "user" ), users_names = {};
+
+       	  if( clicked_friend !== "AllFriends" ){
+	          for( var user in streams.users ) { users_names[user] = user };
+	          delete users_names[ clicked_friend ];
+
+	          for( var u in users_names ) { $( "." + u ).hide() };
+
+	          $( "." + clicked_friend ).show()
+	          stream = streams.users[ clicked_friend ];
+
+	      } else {
+	      	  for( var u in streams.users ) { $( "."+u ).show() };
+	          stream = streams.home;
+	  	  }
+
+        });
       });
 
 
